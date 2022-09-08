@@ -1,7 +1,7 @@
 
 ''' 
 Wersja oryginalna (MatLab):
-Konwersja wspÛ≥rzÍdnych uk≥adu WGS84 do uk≥adu PUWG92
+Konwersja wsp√≥≈Çrzƒôdnych uk≈Çadu WGS84 do uk≈Çadu PUWG92
     Opis:
     konwersja wspolrzednych z ukladu WGS 84 do ukladu PUWG 1992
     Parametry:
@@ -31,11 +31,11 @@ Konwersja wspÛ≥rzÍdnych uk≥adu WGS84 do uk≥adu PUWG92
         doi:10.1117/12.2001354
        
  Literatura:
-        Uriasz, J., ìWybrane odwzorowania kartograficzneî, Akademia Morska w Szczecinie,
+        Uriasz, J., ‚ÄúWybrane odwzorowania kartograficzne‚Äù, Akademia Morska w Szczecinie,
         http://uriasz.am.szczecin.pl/naw_bezp/odwzorowania.html
         
         
-    Wersja dla jÍzyka Python:
+    Wersja dla jƒôzyka Python:
     '''
 import numpy as np
 
@@ -47,14 +47,14 @@ def WGS84_to_1992(lon:float, lat:float):
         lat {float} -- latitude in WGS84
 
     Returns:
-        Xpuwg -- longitude in WGS84
-        Ypuwg -- latitude in WGS84
+        Xpuwg -- longitude in 1992
+        Ypuwg -- latitude in 1992
     """    
     #Parametry elipsoidy GRS-80
-    e=0.0818191910428  #pierwszymimoúrÛd elipsoidy
-    R0=6367449.14577 #promieÒ sfery Lagrangeía
-    Snorm=2.0E-6   #parametr normujπcy
-    xo=5760000; #parametr centrujπcy
+    e=0.0818191910428  #pierwszymimo≈õr√≥d elipsoidy
+    R0=6367449.14577 #promie≈Ñ sfery Lagrange‚Äôa
+    Snorm=2.0E-6   #parametr normujƒÖcy
+    xo=5760000; #parametr centrujƒÖcy
     a0=5765181.11148097
     a1=499800.81713800
     a2=-63.81145283
@@ -63,8 +63,8 @@ def WGS84_to_1992(lon:float, lat:float):
     a5=-0.00111138
     a6=-0.00010504
 
-    #Parametry odwzorowania Gaussa-Kruegera dla uk≥adu PUWG92
-    L0_stopnie=19; #Poczπtek uk≥adu wsp. PUWG92 (d≥ugoúÊ)
+    #Parametry odwzorowania Gaussa-Kruegera dla uk≈Çadu PUWG92
+    L0_stopnie=19; #PoczƒÖtek uk≈Çadu wsp. PUWG92 (d≈Çugo≈õƒá)
     m0=0.9993
     x0=-5300000
     y0= 500000
@@ -75,12 +75,12 @@ def WGS84_to_1992(lon:float, lat:float):
     dLmin=-6*np.pi/180
     dLmax=6*np.pi/180
 
-    # Dane wejúciowe
+    # Dane wej≈õciowe
     B=lon*np.pi/180
     dL_stopnie=lat-L0_stopnie
     dL=dL_stopnie*np.pi/180
 
-    # etap I - elipsoida na kulÍ Lagrangeía
+    # etap I - elipsoida na kulƒô Lagrange‚Äôa
     U=1-e*np.sin(B)
     V=1+e*np.sin(B)
     K=(U/V)**(e/2)
@@ -97,13 +97,13 @@ def WGS84_to_1992(lon:float, lat:float):
     YMERC=np.array(0.5*R0*np.log(r/s))
     
 
-    # etap III - walec na p≥aszczyznÍ
+    # etap III - walec na p≈Çaszczyznƒô
     Z=np.vectorize(complex)((XMERC-xo)*Snorm, YMERC*Snorm)
     Zgk=a0+Z*(a1+Z*(a2+Z*(a3+Z*(a4+Z*(a5+Z*a6)))))
     Xgk=np.real(Zgk)
     Ygk=np.imag(Zgk)
 
-    # Przejúcie do uk≥adu aplikacyjnego
+    # Przej≈õcie do uk≈Çadu aplikacyjnego
     Xpuwg=m0*Xgk+x0
     Ypuwg=m0*Ygk+y0
 
